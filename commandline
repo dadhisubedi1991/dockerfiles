@@ -1,0 +1,37 @@
+DOCKER COMMAND FOR CONTAINERS
+docker create - [ create a container from a images]
+docker state - [state an existing container]
+docker run - [ create a new container and start it ]
+docker ls - [list running container]
+docker inspect - [to see other lots of info. about a containers]
+docker logs - [prints logs]
+docker stop - [forcefully stop running container]
+docker kill - [ stop main processing container abruptly]
+docker rmi -[delete image ]
+docker rm -[delet container]
+
+COMMAND FOR IMAGES
+docker build -[build and image
+docker push - [push an image to a remote repository]
+docker images ls -[list images]
+docker history - [to see all intermediate image info]
+docker image inspect -[ see lots of about an images, including the layers]
+docker rmi - [ delete an images]
+
+TO RUN IMAGES/CONTAINERS
+-docker run -it -d images
+ 
+MAIN DOCKER COMMAND
+docker pull images
+docker run -it -d (image name)
+docker ps [ to see what is running]
+docker ps -a [ to see all history and running images]
+docker exec -it (container id) bash
+docker commit (container id/username/image name)
+docker push (username/image name)
+docker build [path to docker files/repo]
+docker ps -aq [list of all history]
+docker run --name -d -p (localhost)image:tag [-d=directory -p= port, tag= image version]
+docker run -d (images/container)
+docker attach (image/container)
+
