@@ -1,0 +1,77 @@
+Creat EC2 instance and from security configuration  and open the port 
+ssh-22
+http-80
+hppts-523
+tcp-[which ever the docker image you want to pull/put,need to put that image port number e.g. ubuntu:2701]
+
+Then after copy ipv public adress from EC2 instance and paste it into (Motaxterm) ssh
+defualt image would be the whatever the image you want try to uses or EC2 instance name 
+
+Next would be create .sh files
+touch dadhi.sh
+vim "
+      #!/bin/bash
+      sudo apt-get update
+      # Prepare TLS encryption
+      sudo apt-get -y install \
+          apt-transport-https \
+          ca-certificates \
+          curl \
+          gnupg-agent \
+          software-properties-common
+
+      # Add and verify official Docker GPG key
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      sudo apt-key fingerprint 0EBFCD88
+
+      # Add apt repo
+      sudo add-apt-repository \
+         "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+         $(lsb_release -cs) \
+         stable"
+
+      sudo apt-get update
+
+      # Install Docker CE
+
+      sudo apt-get -y install docker-ce docker-ce-cli containerd.io
+
+chmod +x dadhi.sh[to excute docker on this ssh terminal]
+./dadhi.sh    
+sudo vim /etc/group
+sudo reboot
+
+After reboot then 
+ckeck for docker excucute
+docker image ls/docker images
+then, docker pull image name [e.g. docker pull ubuntu]
+docker images
+docker swarm init
+
+After that we need to create stack.yaml file, inside the stack.yaml file we need to have/put what ever the [webservice/images] script you want to use for
+touch stack.yaml
+vim "
+wordpress:
+    image: wordpress
+    ports:
+      - 80:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: examplepassword
+      WORDPRESS_DB_NAME: wpdb
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: wpdb
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: examplepassword
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+docker stack deploy -c stack.yaml mywordpress
+docker images
+docker image ls
+docker services 
+docker ps
+ip a
+   

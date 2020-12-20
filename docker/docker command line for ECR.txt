@@ -1,0 +1,17 @@
+FOR TO CLONE DOCKER FILE IN ECR AWS
+ aws congigure 
+      access key :
+       sectreat key:
+touch Dockerfile
+vim Dockerfile
+  FROM ubuntu:18.04
+  RUN apt-get update
+  RUN apt-get install -y curl nginx
+docker build -t ubuntudemo .
+docker login
+docker tag ubuntudemo:latest dadhisubedi1991/ubuntu:18.04
+docker push dadhisubedi1991/ubuntu:18.04
+AFTER THIS YOU FOLLOW AWS VIEW PUSH COMMAND
+
+
+

@@ -1,0 +1,103 @@
+Creat EC2 instance and from security configuration  and open the port 
+ssh-22
+http-80
+hppts-523
+tcp-[which ever the docker image you want to pull/put,need to put that image port number e.g. ubuntu:2701]
+
+Then after copy ipv public adress from EC2 instance and paste it into (Motaxterm) ssh
+defualt image would be the whatever the image you want try to uses or EC2 instance name 
+
+Next would be create .sh files
+touch dadhi.sh
+vim "
+      #!/bin/bash
+      sudo apt-get update
+      # Prepare TLS encryption
+      sudo apt-get -y install \
+          apt-transport-https \
+          ca-certificates \
+          curl \
+          gnupg-agent \
+          software-properties-common
+
+      # Add and verify official Docker GPG key
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      sudo apt-key fingerprint 0EBFCD88
+
+      # Add apt repo
+      sudo add-apt-repository \
+         "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+         $(lsb_release -cs) \
+         stable"
+
+      sudo apt-get update
+
+      # Install Docker CE
+
+      sudo apt-get -y install docker-ce docker-ce-cli containerd.io
+
+chmod +x dadhi.sh[to excute docker on this ssh terminal]
+./dadhi.sh    
+sudo vim /etc/group
+sudo reboot
+ all the way down docker:ubuntu
+
+After this need/ to create Dockerfile
+touch Dockerfile
+vim "
+   FROM python:3.8
+
+   ENV MICRO_SERVICE=/home/app/webapp
+   # set work directory
+   RUN mkdir -p $MICRO_SERVICE
+   # where your code lives
+   WORKDIR $MICRO_SERVICE
+
+   # set environment variables
+   ENV PYTHONDONTWRITEBYTECODE 1
+   ENV PYTHONUNBUFFERED 1
+
+   # install dependencies
+   RUN pip install --upgrade pip
+   # copy project
+   COPY src/ $MICRO_SERVICE
+   RUN pip install -r requirements.txt
+   EXPOSE 8501
+   CMD streamlit run app.py
+After this go back to home 
+cd ..
+ and make src folder
+mkdir src
+cd src
+touch appy.py
+vim "
+   import streamlit as st
+
+   st.title("Learning How to Deploy Python application, let's go..")
+   st.header("Calculate % Growth")
+   initial = st.number_input("Initial investment in USD")
+   yr = st.number_input("Growth Period in years")
+   growth = st.number_input("Growth Rate in %")
+   terminal_value = 0
+   current_val = initial
+   for year in range(int(yr)):
+      current_val += growth * current_val
+      terminal_value = current_val
+
+   # perform cashflow projections for the next 5 years
+   st.write(f'Terminal value of {initial} after {yr} years at a growth rate of {growth} is {terminal_value}')
+again inside src
+touch requirements.txt
+vim "
+  streamlit
+
+Now you should be good to go for build docker files
+docker build -t (awsdemo1) . [awsdemo is the file/folder you tring to create at the same time when you trying do build]
+docker run -dp port:port awsdemo [2701:2701]
+docker images / image ls
+docker service ls
+
+
+
+
+
